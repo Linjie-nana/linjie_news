@@ -1,6 +1,7 @@
 <template>
   <div class="inputWrapper">
     <input
+      @blur="doit"
       :type="type"
       v-model="value"
       :class="{
@@ -29,6 +30,13 @@ export default {
       } else {
         this.isValid = false;
         console.log(this.err_msg);
+      }
+    },
+  },
+  methods: {
+    doit() {
+      if (!this.isValid) {
+        alert(this.err_msg);
       }
     },
   },
