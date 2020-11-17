@@ -36,7 +36,9 @@ export default {
   methods: {
     doit() {
       if (!this.isValid) {
-        alert(this.err_msg);
+        this.$toast.fail(this.err_msg);
+
+        // alert(this.err_msg);
       }
     },
   },
