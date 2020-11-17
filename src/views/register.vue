@@ -6,25 +6,22 @@
     <div class="logo">
       <span class="iconfont iconnew"></span>
     </div>
-
-    <userInput type="text" placeholder="输入用户名" :rule="/^.{6}$/" err_msg="不合法" yes_msg="对了" />
-
-    <userInput type="password" placeholder="输入密码" :rule="/^\d{6,12}$/" err_msg="不合法" />
-    <inputBtn value="登录" />
+    <userInput type="text" err_msg="不合法名称" :rule="/^.{6,12}$/" placeholder="输入电话号码" />
+    <userInput type="text" err_msg="不合法名称" :rule="/^.{6,12}$/" placeholder="输入电话号码" />
+    <userInput type="password" err_msg="不合法" :rule="/^\d{6,12}$/" placeholder="输入密码" />
+    <inputBtn value="注册" />
   </div>
 </template>
 
-
 <script>
-import userInput from "../components/userInput";
-import inputBtn from "../components/inputBtn";
-
+import inputBtn from "../components/inputBtn.vue";
+import userInput from "../components/userInput.vue";
 export default {
   components: { userInput, inputBtn },
 };
 </script>
 
-<style  lang="less" scoped >
+<style lang="less" scoped>
 body {
   background-color: #fff6f9;
 }
@@ -45,4 +42,4 @@ body {
     color: #54a9e2;
   }
 }
-</style> 
+</style>
