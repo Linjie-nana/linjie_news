@@ -6,6 +6,7 @@
 
 <script>
 export default {
+  // 拿到父级data值
   props: ["value"],
 };
 </script>

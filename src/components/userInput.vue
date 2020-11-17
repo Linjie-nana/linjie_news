@@ -29,7 +29,6 @@ export default {
         this.isValid = true;
       } else {
         this.isValid = false;
-        console.log(this.err_msg);
       }
     },
   },
@@ -37,9 +36,9 @@ export default {
     doit() {
       if (!this.isValid) {
         this.$toast.fail(this.err_msg);
-
-        // alert(this.err_msg);
       }
+      //父级提交value
+      this.$emit("push_num", this.value);
     },
   },
 };
