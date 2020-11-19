@@ -15,6 +15,13 @@
 </template>
    
 <script>
+/**
+ * @type 文本框类型
+ * @err_msg 失败提示
+ * @yes_msg 成功提示
+ * @rule  正则规则
+ */
+
 export default {
   props: ["type", "placeholder", "rule", "err_msg", "yes_msg"],
   data() {
@@ -35,10 +42,15 @@ export default {
   methods: {
     doit() {
       if (!this.isValid) {
-        this.$toast.fail(this.err_msg);
+        // this.$toast.fail(this.err_msg);
+        // 参数模式
+        this.$toast.fail({
+          message: this.err_msg,
+          // position: "bottom",
+        });
       }
       //父级提交value
-      this.$emit("push_num", this.value);
+      this.$emit("push_num", this.value, this.isValid);
     },
   },
 };

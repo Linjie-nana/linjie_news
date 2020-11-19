@@ -1,12 +1,11 @@
 <template>
   <div class="btnSubmit">
-    <button :value="value">{{value}}</button>
+    <button>{{value}}</button>
   </div>
 </template>
 
 <script>
 export default {
-  // 拿到父级data值
   props: ["value"],
 };
 </script>

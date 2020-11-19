@@ -12,8 +12,7 @@
       placeholder="输入用户名"
       :rule="/^.{3,12}$/"
       err_msg="不合法"
-      @push_num="get_name"
-      :names="name"
+      @push_num="get_name(arguments)"
     />
 
     <userInput
@@ -21,8 +20,7 @@
       placeholder="输入密码"
       :rule="/^\d{3,12}$/"
       err_msg="不合法"
-      @push_num="get_password"
-      :pwds="pwd"
+      @push_num="get_password(arguments)"
     />
     <inputBtn value="登录" @click.native="login" />
   </div>
@@ -32,42 +30,48 @@
 <script>
 import userInput from "../components/userInput";
 import inputBtn from "../components/inputBtn";
-
 export default {
   components: { userInput, inputBtn },
   data() {
     return {
       name: "",
       pwd: "",
+      //这个是正则判断
+      namerule: "",
+      pwdrule: "",
     };
   },
   //拿到input框的value值
   methods: {
     get_name(res) {
-      this.name = res;
-      console.log(this.name);
+      this.name = res[0];
+      this.namerule = res[1];
     },
     get_password(res) {
-      this.pwd = res;
+      this.pwd = res[0];
+      this.pwdrule = res[1];
       console.log(this.pwd);
     },
-
     login() {
-      this.$axios({
-        url: "http://157.122.54.189:9083/login",
-        method: "POST",
-        data: {
-          username: this.name,
-          password: this.pwd,
-        },
-      }).then((res) => {
-        if (res.data.statusCode == 401) {
-          this.$toast.fail("登录失败");
-        } else {
-          this.$toast.success(res.data.message);
-        }
-        console.log(res);
-      });
+      if (this.namerule && this.pwdrule) {
+        this.$axios({
+          url: "http://157.122.54.189:9083/login",
+          method: "POST",
+          data: {
+            username: this.name,
+            password: this.pwd,
+          },
+        }).then((res) => {
+          if (res.data.statusCode == 401) {
+            this.$toast.fail("登录失败");
+          } else {
+            this.$toast.success(res.data.message);
+          }
+          console.log(res);
+        });
+      } else {
+        this.$toast.fail("请输入正确格式");
+      }
     },
   },
 };
