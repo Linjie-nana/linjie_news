@@ -7,6 +7,8 @@
     <router-link to="/userindex">用户主页</router-link>
     <br />
     <router-link to="/userupdata">用户修改</router-link>
+    <br />
+    <router-link to="/userfollows">关注页</router-link>
     <button @click="gogogo">aaa</button>
   </div>
 </template>

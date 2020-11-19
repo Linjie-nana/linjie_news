@@ -7,6 +7,7 @@ import Login from '../views/login.vue'
 import Register from '../views/register.vue'
 import UserIndex from '../views/userIndex.vue'
 import UserUpdate from '../views/userUpdate.vue'
+import userFollows from '../views/userFollows.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -30,6 +31,10 @@ const routes = [
   {
     path: '/userupdata',
     component: UserUpdate,
+  },
+  {
+    path: '/userfollows',
+    component: userFollows
   }
 ]
 

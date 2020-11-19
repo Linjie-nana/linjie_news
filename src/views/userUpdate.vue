@@ -6,7 +6,7 @@
         <img :src="'http://157.122.54.189:9083'+ head_img" />
       </div>
     </div>
-    <item item_left="昵称" :item_right="nickname" />
+    <item item_left="昵称" :item_right="nickname" @click.native="link_love" />
     <item item_left="密码" item_right="******" />
     <item item_left="性别" :item_right="gender" />
   </div>
@@ -49,6 +49,9 @@ export default {
   methods: {
     back() {
       window.location.href = "#/userindex";
+    },
+    link_love() {
+      window.location.href = "#/mylove";
     },
   },
 };
