@@ -5,6 +5,8 @@ import Home from '../views/Home.vue'
 
 import Login from '../views/login.vue'
 import Register from '../views/register.vue'
+import UserIndex from '../views/userIndex.vue'
+import UserUpdate from '../views/userUpdate.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,9 +22,15 @@ const routes = [
   {
     path: '/register',
     component: Register,
+  },
+  {
+    path: '/userindex',
+    component: UserIndex,
+  },
+  {
+    path: '/userupdata',
+    component: UserUpdate,
   }
-
-
 ]
 
 const router = new VueRouter({

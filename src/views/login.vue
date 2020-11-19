@@ -65,9 +65,13 @@ export default {
           if (res.data.statusCode == 401) {
             this.$toast.fail("登录失败");
           } else {
+            console.log(res);
             this.$toast.success(res.data.message);
+            console.log(res.data);
+            localStorage.setItem("token", res.data.data.token);
+            localStorage.setItem("userId", res.data.data.user.id);
+            window.location.href = "#/userindex";
           }
-          console.log(res);
         });
       } else {
         this.$toast.fail("请输入正确格式");
@@ -78,9 +82,6 @@ export default {
 </script>
 
 <style  lang="less" scoped >
-body {
-  background-color: #fff6f9;
-}
 .container {
   // background-color: #fff6f9;
   padding: 24 /360 * 100vw;

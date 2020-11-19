@@ -1,7 +1,12 @@
 <template>
   <div class>
     <router-link to="/login">登录页</router-link>
+    <br />
     <router-link to="/register">注册页</router-link>
+    <br />
+    <router-link to="/userindex">用户主页</router-link>
+    <br />
+    <router-link to="/userupdata">用户修改</router-link>
     <button @click="gogogo">aaa</button>
   </div>
 </template>
