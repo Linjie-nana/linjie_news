@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <div class="header">
+    <div class="header" @click="link">
       <div class="header_img">
         <img :src="'http://157.122.54.189:9083'+ head_img" />
       </div>
@@ -33,7 +33,11 @@ export default {
     };
   },
   components: { item },
-
+  methods: {
+    link() {
+      window.location.href = "#/userupdata";
+    },
+  },
   mounted() {
     this.$axios({
       url: `http://157.122.54.189:9083/user/${localStorage.getItem("userId")}`,
