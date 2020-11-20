@@ -18,7 +18,7 @@
     <userInput
       type="password"
       placeholder="输入密码"
-      :rule="/^\d{3,12}$/"
+      :rule="/^\d{1,12}$/"
       err_msg="不合法"
       @push_num="get_password(arguments)"
     />
