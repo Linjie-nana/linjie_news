@@ -5,9 +5,9 @@ import Home from '../views/Home.vue'
 
 import Login from '../views/login.vue'
 import Register from '../views/register.vue'
-import UserIndex from '../views/userIndex.vue'
-import UserUpdate from '../views/userUpdate.vue'
-import userFollows from '../views/userFollows.vue'
+import UserIndex from '../profile/userIndex.vue'
+import UserUpdate from '../profile/userUpdate.vue'
+import userFollows from '../profile/userFollows.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -40,6 +40,16 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.path == '/profile' || to.path == '/userupdata' || to.path == '/userfollows') {
+    if (localStorage.getItem('token')) {
+      next()
+    } else {
+      router.push('/login').catch((err) => { })
+    }
+  } else { next() }
 })
 
 export default router

@@ -33,14 +33,6 @@ export default {
       console.log(res);
       this.data = res.data.data;
       console.log(this.data);
-      // if (res.data.statusCode == 401) {
-      //   window.location.href = "#/login";
-      // } else {
-      //   console.log(this.nickname);
-      //   console.log(this.head_img);
-      //   this.nickname = res.data.data.nickname;
-      //   this.head_img = res.data.data.head_img;
-      // }
     });
   },
 };

@@ -6,7 +6,7 @@
         <img :src="'http://157.122.54.189:9083'+ head_img" />
       </div>
     </div>
-    <item item_left="昵称" :item_right="nickname" @click.native="link_love" />
+    <item item_left="昵称" :item_right="nickname" />
     <item item_left="密码" item_right="******" />
     <item item_left="性别" :item_right="gender" />
   </div>
@@ -37,9 +37,6 @@ export default {
       } else {
         this.nickname = res.data.data.nickname;
         this.head_img = res.data.data.head_img;
-        console.log(this.nickname);
-        console.log(this.head_img);
-        console.log(res.data.data.gender);
         if (res.data.data.gender != 1) {
           this.gender = "女";
         }
@@ -50,16 +47,13 @@ export default {
     back() {
       window.location.href = "#/userindex";
     },
-    link_love() {
-      window.location.href = "#/mylove";
-    },
   },
 };
 </script>
 
 <style lang="less" scoped>
 .body {
-  height: 1000 /360 * 100vw;
+  min-height: 100vh;
   background-color: #f2f2f2;
 }
 .header {

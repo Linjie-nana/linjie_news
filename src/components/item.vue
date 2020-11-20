@@ -23,7 +23,7 @@ export default {
   height: 50 /360 * 100vw;
   width: 100%;
   border-bottom: 1 /360 * 100vw solid #ccc;
-  background-color: #f2f2f2;
+  background-color: #ffffff;
   .title_left {
     margin-left: 10 /360 * 100vw;
     font-size: 15 /360 * 100vw;
