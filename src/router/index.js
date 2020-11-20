@@ -8,6 +8,7 @@ import Register from '../views/register.vue'
 import UserIndex from '../profile/userIndex.vue'
 import UserUpdate from '../profile/userUpdate.vue'
 import userFollows from '../profile/userFollows.vue'
+import userComment from '../profile/userComment.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -35,6 +36,10 @@ const routes = [
   {
     path: '/userfollows',
     component: userFollows
+  },
+  {
+    path: '/usercomment',
+    component: userComment
   }
 ]
 
@@ -43,7 +48,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.path == '/profile' || to.path == '/userupdata' || to.path == '/userfollows') {
+  if (to.path == '/profile' || to.path == '/userupdata' || to.path == '/userfollows' || to.path == '/usercomment') {
     if (localStorage.getItem('token')) {
       next()
     } else {

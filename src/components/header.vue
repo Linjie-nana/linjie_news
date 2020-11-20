@@ -11,7 +11,12 @@
  *@title 引用中输入标题
  */
 export default {
-  props: ["title", "back"],
+  props: ["title"],
+  methods: {
+    back() {
+      window.location.href = "#/userindex";
+    },
+  },
 };
 </script>
 
