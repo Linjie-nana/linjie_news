@@ -5,41 +5,57 @@ import Home from '../views/Home.vue'
 
 import Login from '../views/login.vue'
 import Register from '../views/register.vue'
-import UserIndex from '../profile/userIndex.vue'
-import UserUpdate from '../profile/userUpdate.vue'
-import userFollows from '../profile/userFollows.vue'
-import userComment from '../profile/userComment.vue'
+import UserIndex from '../views/profile/userIndex.vue'
+import UserUpdate from '../views/profile/userUpdate.vue'
+import userFollows from '../views/profile/userFollows.vue'
+import userComment from '../views/profile/userComment.vue'
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+
+
   },
   {
     path: '/login',
-    component: Login
+    component: Login,
+
   },
   {
     path: '/register',
     component: Register,
+
   },
   {
     path: '/userindex',
     component: UserIndex,
+    meta: {
+      needAuth: true
+    }
   },
   {
     path: '/userupdata',
     component: UserUpdate,
+    meta: {
+      needAuth: true
+    }
   },
   {
     path: '/userfollows',
-    component: userFollows
+    component: userFollows,
+    meta: {
+      needAuth: true
+    }
   },
   {
     path: '/usercomment',
-    component: userComment
+    component: userComment,
+    meta: {
+      needAuth: true
+    }
   }
 ]
 
@@ -47,8 +63,12 @@ const router = new VueRouter({
   routes
 })
 
+//路由守卫
 router.beforeEach((to, from, next) => {
-  if (to.path == '/profile' || to.path == '/userupdata' || to.path == '/userfollows' || to.path == '/usercomment') {
+  //第一种方法
+  // if (to.path == '/profile' || to.path == '/userupdata' || to.path == '/userfollows' || to.path == '/usercomment') {
+  //第二种
+  if (to.meta.needAuth) {
     if (localStorage.getItem('token')) {
       next()
     } else {

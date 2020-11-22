@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import headers from "../components/header";
+import headers from "@/components/header";
 export default {
   components: {
     headers,
@@ -17,7 +17,7 @@ export default {
   },
   mounted() {
     this.$axios({
-      url: `http://157.122.54.189:9083/user_comments`,
+      url: `/user_comments`,
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },

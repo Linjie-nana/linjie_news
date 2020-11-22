@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import headers from "../components/header";
-import userFollows from "../components/followItem";
+import headers from "@/components/header";
+import userFollows from "@/components/followItem";
 
 export default {
   components: { headers, userFollows },
@@ -28,7 +28,7 @@ export default {
   methods: {
     follow() {
       this.$axios({
-        url: `http://157.122.54.189:9083/user_follows/${this.flllowID}`,
+        url: `/user_follows/${this.flllowID}`,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

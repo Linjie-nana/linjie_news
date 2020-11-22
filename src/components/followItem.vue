@@ -19,7 +19,7 @@ export default {
     delet(id) {
       console.log(id);
       this.$axios({
-        url: `http://157.122.54.189:9083/user_unfollow/${id}`,
+        url: `/user_unfollow/${id}`,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

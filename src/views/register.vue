@@ -69,7 +69,7 @@ export default {
     register() {
       if (this.rulenick && this.rulename && this.rulepwd) {
         this.$axios({
-          url: "http://157.122.54.189:9083/register",
+          url: "/register",
           method: "POST",
           data: {
             username: this.name,
@@ -77,12 +77,8 @@ export default {
             nickname: this.nick,
           },
         }).then((res) => {
-          if (res.data.statusCode == 401) {
-            this.$toast("注册失败");
-          } else {
-            this.$toast.success(res.data.message);
-            window.location.href = "#/login";
-          }
+          this.$toast.success(res.data.message);
+          window.location.href = "#/login";
           console.log(res);
         });
       } else {
@@ -92,6 +88,7 @@ export default {
   },
 };
 </script>
+
 
 <style lang="less" scoped>
 body {
@@ -115,3 +112,4 @@ body {
   }
 }
 </style>
+

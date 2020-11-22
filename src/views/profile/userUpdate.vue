@@ -20,7 +20,7 @@
       <van-field v-model="password" label="密码" :placeholder="nickname" />
     </van-dialog>
     <van-dialog v-model="gendershow" title="修改性别" show-cancel-button :beforeClose="beforeClose">
-      <van-field v-model="gender" label="用户名" :placeholder="nickname" />
+      <van-field v-model="gender" label="性别" :placeholder="nickname" />
     </van-dialog>
   </div>
 </template>
@@ -31,8 +31,8 @@
 
 
 <script>
-import item from "../components/item";
-import headers from "../components/header";
+import item from "@/components/item";
+import headers from "@/components/header";
 import { Dialog } from "vant";
 
 export default {
@@ -55,29 +55,37 @@ export default {
       gendershow: false,
     };
   },
+
+  // 首次加载请求数据渲染页面
   mounted() {
-    this.$axios({
-      url: `http://157.122.54.189:9083/user/${localStorage.getItem("userId")}`,
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    }).then((res) => {
-      console.log(res);
-      if (res.data.statusCode == 401) {
-        window.location.href = "#/login";
-      } else {
-        this.nickname = res.data.data.nickname;
-        this.head_img = res.data.data.head_img;
-        this.password = res.data.data.password;
-        if (res.data.data.gender != 1) {
-          this.gender = "女";
-          this.sex = 0;
-        }
-      }
-    });
+    this.load();
   },
 
   methods: {
+    load() {
+      this.$axios({
+        url: `http://157.122.54.189:9083/user/${localStorage.getItem(
+          "userId"
+        )}`,
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.data.statusCode == 401) {
+          window.location.href = "#/login";
+        } else {
+          this.nickname = res.data.data.nickname;
+          this.head_img = res.data.data.head_img;
+          this.password = res.data.data.password;
+          if (res.data.data.gender != 1) {
+            //性别设定sex为提交变量，gender为显示变量
+            this.gender = "女";
+            this.sex = 0;
+          }
+        }
+      });
+    },
     // 上传图片功能
     afterRead(file) {
       console.log(file);
@@ -92,28 +100,9 @@ export default {
         },
         data: formData,
       }).then((res) => {
+        //上传图片后顺带获取图片地址
         this.head_img = res.data.data.url;
-      });
-    },
-
-    //弹出层
-    nick() {
-      this.nickshow = !this.nickshow;
-    },
-    pwd() {
-      this.pwdshow = !this.pwdshow;
-    },
-    gen() {
-      this.gendershow = !this.gendershow;
-    },
-
-    beforeClose(action, done) {
-      if (action === "confirm") {
-        if (this.gender == "男") {
-          this.sex = 1;
-        } else {
-          this.sex = 2;
-        }
+        //图片发生请求
         this.$axios({
           url: ` http://157.122.54.189:9083/user_update/${localStorage.getItem(
             "userId"
@@ -128,11 +117,48 @@ export default {
             head_img: this.head_img,
             gender: this.sex,
           },
+        });
+      });
+    },
+
+    //弹出层
+    nick() {
+      this.nickshow = !this.nickshow;
+    },
+    pwd() {
+      this.pwdshow = !this.pwdshow;
+    },
+    gen() {
+      this.gendershow = !this.gendershow;
+    },
+
+    //vant弹出框判定确定键和取消键
+    beforeClose(action, done) {
+      if (action === "confirm") {
+        if (this.gender == "男") {
+          this.sex = 1;
+        } else {
+          this.sex = 0;
+        }
+        this.$axios({
+          url: ` /user_update/${localStorage.getItem("userId")}`,
+          method: "post",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          data: {
+            nickname: this.nickname,
+            password: this.password,
+            head_img: this.head_img,
+            gender: this.sex,
+          },
         }).then((res) => {
           done();
+          this.load();
         });
       } else if (action === "cancel") {
         done();
+        this.load();
       }
     },
   },

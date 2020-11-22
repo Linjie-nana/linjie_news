@@ -1,9 +1,7 @@
 <template>
   <div class="body">
     <div class="header" @click="link">
-      <div class="header_img">
-        <img :src="'http://157.122.54.189:9083'+ head_img" />
-      </div>
+      <img :src="'http://157.122.54.189:9083'+ head_img" class="header_img" />
       <div class="user_name">
         <span class="name">
           <span
@@ -33,7 +31,7 @@
 
 
 <script>
-import item from "../components/item";
+import item from "@/components/item";
 export default {
   data() {
     return {
@@ -62,19 +60,15 @@ export default {
   },
   mounted() {
     this.$axios({
-      url: `http://157.122.54.189:9083/user/${localStorage.getItem("userId")}`,
+      url: `/user/${localStorage.getItem("userId")}`,
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     }).then((res) => {
       console.log(res);
-      if (res.data.statusCode == 401) {
-        window.location.href = "#/login";
-      } else {
-        this.nickname = res.data.data.nickname;
-        this.head_img = res.data.data.head_img;
-        this.gender = res.data.data.gender;
-      }
+      this.nickname = res.data.data.nickname;
+      this.head_img = res.data.data.head_img;
+      this.gender = res.data.data.gender;
     });
   },
 };
@@ -102,11 +96,7 @@ export default {
       height: 75 /360 * 100vw;
       background-color: pink;
       border-radius: 50%;
-      overflow: hidden;
-      img {
-        transform: scale(1.1);
-        width: 100%;
-      }
+      object-fit: cover;
     }
     .user_name {
       float: left;

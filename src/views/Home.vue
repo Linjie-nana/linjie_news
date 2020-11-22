@@ -21,7 +21,7 @@ export default {
         // 一样是配置对象
         // 可以使用 http://157.122.54.189:9083/post
         // 或者本地 127.0.0.1:3000 测试
-        url: "http://157.122.54.189:9083/post",
+        url: "/post",
         // jq 的 type 变成了 method
         method: "get",
         // 这里注意,成功回调 不再是 success

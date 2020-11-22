@@ -55,23 +55,17 @@ export default {
     login() {
       if (this.namerule && this.pwdrule) {
         this.$axios({
-          url: "http://157.122.54.189:9083/login",
+          url: "/login",
           method: "POST",
           data: {
             username: this.name,
             password: this.pwd,
           },
         }).then((res) => {
-          if (res.data.statusCode == 401) {
-            this.$toast.fail("登录失败");
-          } else {
-            console.log(res);
-            this.$toast.success(res.data.message);
-            console.log(res.data);
-            localStorage.setItem("token", res.data.data.token);
-            localStorage.setItem("userId", res.data.data.user.id);
-            window.location.href = "#/userindex";
-          }
+          this.$toast.success(res.data.message);
+          localStorage.setItem("token", res.data.data.token);
+          localStorage.setItem("userId", res.data.data.user.id);
+          window.location.href = "#/userindex";
         });
       } else {
         this.$toast.fail("请输入正确格式");
