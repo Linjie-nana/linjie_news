@@ -25,7 +25,7 @@ export default {
         },
       }).then((res) => {
         this.$toast(res.data.message);
-        this.$router.go(0);
+        this.load();
       });
     },
   },
@@ -39,6 +39,7 @@ export default {
 
 <style lang="less" scoped>
 .love_item {
+  position: relative;
   display: flex;
   align-items: center;
   width: 100%;
@@ -67,7 +68,8 @@ export default {
   }
 
   button {
-    margin-left: 80 /360 * 100vw;
+    position: absolute;
+    right: 10 /360 * 100vw;
     height: 30 /360 * 100vw;
     width: 75 /360 * 100vw;
     border-radius: 19px;

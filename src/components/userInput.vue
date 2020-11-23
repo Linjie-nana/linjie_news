@@ -32,6 +32,7 @@ export default {
   },
   watch: {
     value: function (val) {
+      console.log(this.rule);
       if (this.rule.test(val)) {
         this.isValid = true;
       } else {

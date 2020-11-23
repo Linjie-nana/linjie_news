@@ -19,7 +19,6 @@ Vue.use(Vant)
 import axios from "axios";
 //公共提交链接
 axios.defaults.baseURL = "http://157.122.54.189:9083";
-
 axios.interceptors.response.use(res => {
   // 拦截器可以拦截到结果 res
   // 记得需要放行
@@ -38,12 +37,8 @@ axios.interceptors.response.use(res => {
   }
   return res
 })
-
-
 // 绑定到原型
 Vue.prototype.$axios = axios;
-
-
 
 
 Vue.config.productionTip = false
