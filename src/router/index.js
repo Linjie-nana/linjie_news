@@ -9,6 +9,8 @@ import UserIndex from '../views/profile/userIndex.vue'
 import UserUpdate from '../views/profile/userUpdate.vue'
 import userFollows from '../views/profile/userFollows.vue'
 import userComment from '../views/profile/userComment.vue'
+import articleDetails from '../views/profile/articleDetails.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -56,6 +58,10 @@ const routes = [
     meta: {
       needAuth: true
     }
+  },
+  {
+    path: '/articleDetails',
+    component: articleDetails,
   }
 ]
 
