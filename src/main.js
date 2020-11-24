@@ -19,6 +19,19 @@ Vue.use(Vant)
 import axios from "axios";
 //公共提交链接
 axios.defaults.baseURL = "http://157.122.54.189:9083";
+
+// token判断是否有token在表头，如果没有则加入------------------------
+axios.interceptors.request.use(config => {
+  // 要有是否有表头判断，如果没有判断表头，则可能覆盖以后有需要表头的操作
+  if (!config.headers.Authorization && localStorage.getItem('token')) {
+    // 在表头添加token
+    config.headers.Authorization = localStorage.getItem('token')
+  }
+  return config
+})
+
+
+// 发送请求后的token是否正确，如果错误转跳回登录页--------------------
 axios.interceptors.response.use(res => {
   // 拦截器可以拦截到结果 res
   // 记得需要放行
@@ -39,6 +52,15 @@ axios.interceptors.response.use(res => {
 })
 // 绑定到原型
 Vue.prototype.$axios = axios;
+
+
+Vue.filter('fixImgUrl', (oldUrl) => {
+  if (oldUrl.indexOf("http") > -1) {
+    return oldUrl;
+  } else {
+    return axios.defaults.baseURL + oldUrl;
+  }
+})
 
 
 Vue.config.productionTip = false

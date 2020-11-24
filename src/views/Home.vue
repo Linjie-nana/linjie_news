@@ -1,33 +1,73 @@
 <template>
-  <div class>
-    <router-link to="/login">登录页</router-link>
-    <br />
-    <router-link to="/register">注册页</router-link>
-    <br />
-    <router-link to="/userindex">用户主页</router-link>
-    <br />
-    <router-link to="/userupdata">用户修改</router-link>
-    <br />
-    <router-link to="/userfollows">关注页</router-link>
-    <button @click="gogogo">aaa</button>
+  <div class="body">
+    <indexHeader />
+
+    <div class="nav">
+      <van-tabs v-model="active" s class="van-tabs" background="#f4f4f4" @click="gogogo">
+        <van-tab v-for="(item,index) in arr" :title="item.name" :key="index" :name="item.id">
+          <indexPostIten v-for="(item,index) in postData" :postData="item" :key="index" />
+        </van-tab>
+      </van-tabs>
+      <div class="icon">
+        <span class="iconfont iconjiantou"></span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import indexHeader from "../components/indeHeader";
+import indexPostIten from "../components/indexPostItem";
 export default {
-  methods: {
-    gogogo() {
+  components: { indexHeader, indexPostIten },
+  data() {
+    return {
+      active: 11,
+      // arr 是nav栏渲染的分类
+      arr: [],
+      postData: [],
+    };
+  },
+
+  created() {
+    this.gogogo(11),
       this.$axios({
-        // 一样是配置对象
-        // 可以使用 http://157.122.54.189:9083/post
-        // 或者本地 127.0.0.1:3000 测试
-        url: "/post",
-        // jq 的 type 变成了 method
-        method: "get",
-        // 这里注意,成功回调 不再是 success
+        url: "/category",
+        method: "GET",
       }).then((res) => {
-        console.log(res);
+        const res_data = res.data.data;
+        //这一种提取is_top的类型渲染首页
+        // console.log(this.arr);
+        // res_data.forEach((item) => {
+        //   if (item.is_top == 0) {
+        //     this.arr.push(item);
+        //   }
+        // });
+
+        // /这一种是去重渲染首页
+
+        let new_arr = new Set();
+        res_data.forEach((element) => {
+          if (!new_arr.has(element.name)) {
+            new_arr.add(element.name);
+            this.arr.push(element);
+          }
+        });
+        console.log(this.arr);
       });
+  },
+
+  methods: {
+    gogogo(name) {
+      this.$axios({
+        url: `/post?category=${name}`,
+        method: "get",
+      }).then((res) => {
+        // console.log(res);
+        this.postData = res.data.data;
+        console.log(this.postData);
+      });
+      // console.log(name);
     },
   },
 };
@@ -35,4 +75,34 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.nav {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 35 /360 * 100vw;
+  background-color: #fff;
+  .icon {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 35 /360 * 100vw;
+    width: 35 /360 * 100vw;
+    background-color: #f4f4f4;
+    text-align: center;
+    line-height: 35 /360 * 100vw;
+    transform: rotate(270deg);
+    .iconjiantou {
+      font-size: 18 /360 * 100vw;
+    }
+  }
+  /deep/ .van-tabs__wrap {
+    height: 35 /360 * 100vw;
+  }
+  /deep/ .van-tab__text {
+    font-size: 14 /360 * 100vw;
+  }
+  /deep/ .van-tabs__line {
+    background-color: #54a9e2;
+  }
+}
 </style>

@@ -58,7 +58,7 @@ export default {
       this.$router.replace("/login");
     },
   },
-  mounted() {
+  created() {
     this.$axios({
       url: `/user/${localStorage.getItem("userId")}`,
       headers: {
