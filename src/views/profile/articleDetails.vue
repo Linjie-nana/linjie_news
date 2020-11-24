@@ -15,7 +15,7 @@
     </div>
 
     <div class="buttom">
-      <div class="nice">点赞</div>
+      <div :class="nice_c" @click="like">点赞</div>
       <div class="wechat">
         <span class="iconfont iconweixin"></span> 微信
       </div>
@@ -28,8 +28,10 @@ export default {
   data() {
     return {
       date: "",
+      nice_c: "",
     };
   },
+  //   根据在sessionStorage中传过来的id请求
   mounted() {
     this.$axios({
       url: `/post/${sessionStorage.getItem("id")}`,
@@ -37,9 +39,28 @@ export default {
       this.date = res.data.data;
     });
   },
-  methods: {},
+  methods: {
+    like() {
+      this.$axios({
+        url: `/post_like/${sessionStorage.getItem("id")}`,
+      }).then((res) => {
+        console.log(res);
+        if (res.data.message == "点赞成功") {
+          this.$toast(res.data.message);
+          this.nice_c = "nice_y";
+        } else {
+          this.$toast(res.data.message);
+          this.nice_c = "nice_n";
+        }
+      });
+    },
+  },
 };
 </script>
+
+
+
+
 
 <style lang="less" scoped>
 .header {
@@ -66,6 +87,7 @@ export default {
     width: 50 /360 * 100vw;
     height: 25 /360 * 100vw;
     text-align: center;
+    font-size: 13 /360 * 100vw;
     line-height: 25 /360 * 100vw;
   }
 }
@@ -97,7 +119,13 @@ export default {
     text-align: center;
     line-height: 25 /360 * 100vw;
   }
-
+  .nice_y {
+    background-color: #54a9e2 !important;
+    color: white;
+    border: 0px;
+  }
+  .nice_n {
+  }
   .wechat {
     .iconweixin {
       color: #00c100;
