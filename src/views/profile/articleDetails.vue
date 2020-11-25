@@ -5,7 +5,8 @@
         <span class="iconfont iconjiantou2" @click="$router.replace('/')"></span>
         <span class="iconfont iconnew"></span>
       </div>
-      <div class="follow">关注</div>
+      <div v-if="date.has_follow==true" class="follow" @click="un_follow">已关注</div>
+      <div v-else class="follow" @click="follow">关注</div>
     </div>
     <div class="article">
       <h2>{{date.title}}</h2>
@@ -15,9 +16,12 @@
     </div>
 
     <div class="buttom">
-      <div :class="nice_c" @click="like">点赞</div>
+      <div @click="like">
+        <span class="iconfont icondianzan" :class="nice_c"></span>
+        {{date.like_length}}
+      </div>
       <div class="wechat">
-        <span class="iconfont iconweixin"></span> 微信
+        <span class="iconfont iconweixin">微信</span>
       </div>
     </div>
   </div>
@@ -28,18 +32,29 @@ export default {
   data() {
     return {
       date: "",
+      //点赞栏目类名-----
       nice_c: "",
     };
   },
   //   根据在sessionStorage中传过来的id请求
   mounted() {
-    this.$axios({
-      url: `/post/${sessionStorage.getItem("id")}`,
-    }).then((res) => {
-      this.date = res.data.data;
-    });
+    this.article_load();
   },
   methods: {
+    article_load() {
+      this.$axios({
+        url: `/post/${sessionStorage.getItem("id")}`,
+      }).then((res) => {
+        this.date = res.data.data;
+        console.log(this.date);
+        console.log(this.date.has_follow);
+        if (res.data.data.has_like) {
+          this.nice_c = "nice_y";
+        }
+      });
+    },
+
+    //点赞-------------------------
     like() {
       this.$axios({
         url: `/post_like/${sessionStorage.getItem("id")}`,
@@ -48,10 +63,32 @@ export default {
         if (res.data.message == "点赞成功") {
           this.$toast(res.data.message);
           this.nice_c = "nice_y";
+          this.article_load();
         } else {
           this.$toast(res.data.message);
           this.nice_c = "nice_n";
+          this.article_load();
         }
+      });
+    },
+
+    //关注-----------------------------
+    follow() {
+      this.$axios({
+        url: `/user_follows/${this.date.user.id}`,
+      }).then((res) => {
+        console.log(res);
+        this.article_load();
+      });
+    },
+
+    //取消关注----------------------------
+    un_follow() {
+      this.$axios({
+        url: `/user_unfollow/${this.date.user.id}`,
+      }).then((res) => {
+        console.log(res);
+        this.article_load();
       });
     },
   },
@@ -120,11 +157,8 @@ export default {
     line-height: 25 /360 * 100vw;
   }
   .nice_y {
-    background-color: #54a9e2 !important;
-    color: white;
-    border: 0px;
-  }
-  .nice_n {
+    color: #389cdf !important;
+    font-weight: 700;
   }
   .wechat {
     .iconweixin {
