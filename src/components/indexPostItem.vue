@@ -34,7 +34,7 @@
     <div class="singleVideo" v-if="postData.type == 2 && postData.cover.length >= 1">
       <div class="title">{{postData.title}}</div>
       <div class="coverWrapper">
-        <img :src="postData.cover[0].url" class="cover" alt />
+        <img :src="postData.cover[0].url| fixImgUrl" class="cover" alt />
         <span class="iconfont iconshipin"></span>
       </div>
       <div class="info">{{postData.user.nickname}} {{postData.comment_length}} 跟帖</div>

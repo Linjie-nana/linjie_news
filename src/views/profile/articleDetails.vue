@@ -1,18 +1,45 @@
 <template>
   <div>
-    <div class="header">
-      <div class="icon">
-        <span class="iconfont iconjiantou2" @click="$router.replace('/')"></span>
-        <span class="iconfont iconnew"></span>
+    <!-- 判断文章 -->
+    <div v-if="date.type==1" class="text">
+      <div class="header">
+        <div class="icon">
+          <span class="iconfont iconjiantou2" @click="$router.back()"></span>
+          <span class="iconfont iconnew"></span>
+        </div>
+        <div
+          class="follow"
+          :class="{ follow_has:!date.has_follow}"
+          @click="follow"
+        >{{date.has_follow? '关注' : '已关注'}}</div>
       </div>
-      <div v-if="date.has_follow==true" class="follow" @click="un_follow">已关注</div>
-      <div v-else class="follow" @click="follow">关注</div>
-    </div>
-    <div class="article">
-      <h2>{{date.title}}</h2>
-      <span>{{date.user.nickname}} 2020-12-25</span>
+      <div class="article">
+        <h2>{{date.title}}</h2>
+        <span>{{date.user.nickname}} 2020-12-25</span>
 
-      <div class="content" v-html="this.date.content"></div>
+        <div class="content" v-html="this.date.content"></div>
+      </div>
+    </div>
+
+    <!-- 判断视频 -->
+    <div v-if="date.type==2" class="video">
+      <video
+        src=" https://video.pearvideo.com/mp4/adshort/20200421/cont-1670293-15098199_adpkg-ad_hd.mp4"
+        controls
+        poster="http://157.122.54.189:9083/uploads/image/IMG1606459976647.jpeg"
+      ></video>
+      <div class="author">
+        <div class="user">
+          <img :src="date.user.head_img| fixImgUrl" alt />
+          <span>{{date.user.nickname}}</span>
+        </div>
+        <div
+          class="follow"
+          :class="{ follow_has:!date.has_follow}"
+          @click="follow"
+        >{{date.has_follow? '关注' : '已关注'}}</div>
+      </div>
+      <div class="content">{{date.title}}</div>
     </div>
 
     <div class="buttom">
@@ -74,22 +101,22 @@ export default {
 
     //关注-----------------------------
     follow() {
-      this.$axios({
-        url: `/user_follows/${this.date.user.id}`,
-      }).then((res) => {
-        console.log(res);
-        this.article_load();
-      });
-    },
-
-    //取消关注----------------------------
-    un_follow() {
-      this.$axios({
-        url: `/user_unfollow/${this.date.user.id}`,
-      }).then((res) => {
-        console.log(res);
-        this.article_load();
-      });
+      //如果已关注
+      if (this.date.has_follow) {
+        this.$axios({
+          url: `/user_unfollow/${this.date.user.id}`,
+        }).then((res) => {
+          console.log(res);
+        });
+        this.date.has_follow = false;
+      } else {
+        this.$axios({
+          url: `/user_follows/${this.date.user.id}`,
+        }).then((res) => {
+          console.log(res);
+          this.date.has_follow = true;
+        });
+      }
     },
   },
 };
@@ -100,48 +127,100 @@ export default {
 
 
 <style lang="less" scoped>
-.header {
-  height: 40 /360 * 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 10 /360 * 100vw;
-  background-color: #54a9e2;
-  .icon {
+//文章----------------------------------------------------------
+.text {
+  .header {
+    height: 40 /360 * 100vw;
     display: flex;
-    color: white;
     align-items: center;
-    .iconjiantou2 {
-      font-size: 15 /360 * 100vw;
+    justify-content: space-between;
+    padding: 10 /360 * 100vw;
+    background-color: #54a9e2;
+    .icon {
+      display: flex;
+      color: white;
+      align-items: center;
+      .iconjiantou2 {
+        font-size: 15 /360 * 100vw;
+      }
+      .iconnew {
+        font-size: 50 /360 * 100vw;
+      }
     }
-    .iconnew {
-      font-size: 50 /360 * 100vw;
+    .follow {
+      background-color: #fff;
+      border-radius: 20px;
+      width: 50 /360 * 100vw;
+      height: 25 /360 * 100vw;
+      text-align: center;
+      font-size: 13 /360 * 100vw;
+      line-height: 25 /360 * 100vw;
     }
   }
-  .follow {
-    background-color: #fff;
-    border-radius: 20px;
-    width: 50 /360 * 100vw;
-    height: 25 /360 * 100vw;
-    text-align: center;
-    font-size: 13 /360 * 100vw;
-    line-height: 25 /360 * 100vw;
+  .article {
+    padding: 20 /360 * 100vw 10 /360 * 100vw 0;
+    span {
+      display: inline-block;
+      margin-top: 15 /360 * 100vw;
+      color: #888;
+    }
+    .content {
+      margin-top: 7 /360 * 100vw;
+    }
+    /deep/img {
+      width: 100%;
+    }
   }
 }
-.article {
-  padding: 20 /360 * 100vw 10 /360 * 100vw 0;
-  span {
-    display: inline-block;
-    margin-top: 15 /360 * 100vw;
-    color: #888;
-  }
-  .content {
-    margin-top: 7 /360 * 100vw;
-  }
-  /deep/img {
+
+//视频----------------------------------------------------------
+.video {
+  video {
     width: 100%;
   }
+  .author {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 30 /360 * 100vw;
+    padding: 10 /360 * 100vw 20 /360 * 100vw 0;
+
+    .user {
+      display: flex;
+      align-items: center;
+      img {
+        width: 30 /360 * 100vw;
+        height: 30 /360 * 100vw;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      span {
+        padding-left: 5 /360 * 100vw;
+        color: rgb(182, 178, 178);
+        font-size: 13 /360 * 100vw;
+      }
+    }
+    .follow {
+      // background-color: #ccc;
+      border: 1px #ccc solid;
+      border-radius: 20px;
+      width: 50 /360 * 100vw;
+      height: 25 /360 * 100vw;
+      text-align: center;
+      font-size: 13 /360 * 100vw;
+      line-height: 25 /360 * 100vw;
+    }
+    .follow_has {
+      background-color: #54a9e2;
+      color: white;
+    }
+  }
+  .content {
+    font-size: 16 /360 * 100vw;
+    padding: 10 /360 * 100vw 20 /360 * 100vw;
+  }
 }
+
 .buttom {
   margin-top: 10 /360 * 100vw;
   display: flex;
@@ -165,5 +244,10 @@ export default {
       color: #00c100;
     }
   }
+}
+
+.follow_has {
+  background-color: #97cbee !important;
+  color: white;
 }
 </style>

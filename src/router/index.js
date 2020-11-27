@@ -10,6 +10,7 @@ import UserUpdate from '../views/profile/userUpdate.vue'
 import userFollows from '../views/profile/userFollows.vue'
 import userComment from '../views/profile/userComment.vue'
 import articleDetails from '../views/profile/articleDetails.vue'
+import userStar from '../views/profile/userStar.vue'
 
 Vue.use(VueRouter)
 
@@ -62,6 +63,13 @@ const routes = [
   {
     path: '/articleDetails',
     component: articleDetails,
+  },
+  {
+    path: '/userStar',
+    component: userStar,
+    meta: {
+      needAuth: true
+    }
   }
 ]
 

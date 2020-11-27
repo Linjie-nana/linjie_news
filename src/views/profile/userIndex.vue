@@ -19,7 +19,7 @@
     <div class="content">
       <item item_left="我的关注" item_right="关注的用户" @click.native="link_love" />
       <item item_left="我的跟帖" item_right="跟帖/回复" @click.native="link_comment" />
-      <item item_left="我的收藏" item_right="文章/视频" />
+      <item item_left="我的收藏" item_right="文章/视频" @click.native="link_star" />
       <item item_left="设置" />
     </div>
     <div class="out" @click="back">退出登录</div>
@@ -50,6 +50,9 @@ export default {
     },
     link_comment() {
       window.location.href = "#/usercomment";
+    },
+    link_star() {
+      window.location.href = "#/userStar";
     },
     back() {
       localStorage.removeItem("userId");
