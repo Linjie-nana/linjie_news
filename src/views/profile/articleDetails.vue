@@ -11,7 +11,7 @@
           class="follow"
           :class="{ follow_has:!date.has_follow}"
           @click="follow"
-        >{{date.has_follow? '关注' : '已关注'}}</div>
+        >{{date.has_follow? '已关注' : '关注'}}</div>
       </div>
       <div class="article">
         <h2>{{date.title}}</h2>
@@ -22,12 +22,17 @@
     </div>
 
     <!-- 判断视频 -->
+
     <div v-if="date.type==2" class="video">
+      <headers title="视频页" />
       <video
         src=" https://video.pearvideo.com/mp4/adshort/20200421/cont-1670293-15098199_adpkg-ad_hd.mp4"
         controls
         poster="http://157.122.54.189:9083/uploads/image/IMG1606459976647.jpeg"
-      ></video>
+      >
+        <span class="iconfont iconshipin"></span>
+      </video>
+
       <div class="author">
         <div class="user">
           <img :src="date.user.head_img| fixImgUrl" alt />
@@ -37,7 +42,7 @@
           class="follow"
           :class="{ follow_has:!date.has_follow}"
           @click="follow"
-        >{{date.has_follow? '关注' : '已关注'}}</div>
+        >{{date.has_follow? '已关注' : '关注'}}</div>
       </div>
       <div class="content">{{date.title}}</div>
     </div>
@@ -55,7 +60,11 @@
 </template>
 
 <script>
+import headers from "../../components/header";
 export default {
+  components: {
+    headers,
+  },
   data() {
     return {
       date: "",
@@ -90,11 +99,11 @@ export default {
         if (res.data.message == "点赞成功") {
           this.$toast(res.data.message);
           this.nice_c = "nice_y";
-          this.article_load();
+          this.date.like_length++;
         } else {
           this.$toast(res.data.message);
-          this.nice_c = "nice_n";
-          this.article_load();
+          this.nice_c = "";
+          this.date.like_length--;
         }
       });
     },
@@ -176,8 +185,17 @@ export default {
 //视频----------------------------------------------------------
 .video {
   video {
+    position: relative;
     width: 100%;
+    .iconshipin {
+      position: absolute;
+      font-size: 46/360 * 100vw;
+      background-color: #dddd;
+      color: #fff;
+      border-radius: 50%;
+    }
   }
+
   .author {
     display: flex;
     justify-content: space-between;

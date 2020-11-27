@@ -14,7 +14,8 @@ export default {
   props: ["title"],
   methods: {
     back() {
-      window.location.href = "#/userindex";
+      // window.location.href = "#/userindex";
+      this.$router.back();
     },
   },
 };
