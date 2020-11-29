@@ -11,6 +11,7 @@ import userFollows from '../views/profile/userFollows.vue'
 import userComment from '../views/profile/userComment.vue'
 import articleDetails from '../views/profile/articleDetails.vue'
 import userStar from '../views/profile/userStar.vue'
+import test from '../views/test.vue'
 
 Vue.use(VueRouter)
 
@@ -70,6 +71,10 @@ const routes = [
     meta: {
       needAuth: true
     }
+  },
+  {
+    path: '/test',
+    component: test
   }
 ]
 

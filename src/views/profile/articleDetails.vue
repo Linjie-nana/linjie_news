@@ -25,13 +25,15 @@
 
     <div v-if="date.type==2" class="video">
       <headers title="视频页" />
-      <video
-        src=" https://video.pearvideo.com/mp4/adshort/20200421/cont-1670293-15098199_adpkg-ad_hd.mp4"
-        controls
-        poster="http://157.122.54.189:9083/uploads/image/IMG1606459976647.jpeg"
-      >
-        <span class="iconfont iconshipin"></span>
-      </video>
+      <div class="video_content">
+        <video
+          src=" https://video.pearvideo.com/mp4/adshort/20200421/cont-1670293-15098199_adpkg-ad_hd.mp4"
+          controls
+          ref="def"
+          poster="http://157.122.54.189:9083/uploads/image/IMG1606459976647.jpeg"
+        ></video>
+        <!-- <span class="iconfont iconshipin"></span> -->
+      </div>
 
       <div class="author">
         <div class="user">
@@ -56,37 +58,52 @@
         <span class="iconfont iconweixin">微信</span>
       </div>
     </div>
+
+    <div class="line"></div>
+
+    <div class="comment">
+      <h2>精彩跟帖</h2>
+      <comment :commentData="item" v-for="(item, index) in commentList" :key="index" />
+    </div>
+    <div class="moreComment">更多跟帖</div>
   </div>
 </template>
 
 <script>
 import headers from "../../components/header";
+import comment from "../../components/comment/mian";
 export default {
   components: {
     headers,
+    comment,
   },
   data() {
     return {
       date: "",
       //点赞栏目类名-----
       nice_c: "",
+      commentList: "",
     };
   },
-  //   根据在sessionStorage中传过来的id请求
+  //  根据在sessionStorage中传过来的id请求获取文章内容-------------------------------
   mounted() {
     this.article_load();
+    this.comment();
   },
   methods: {
+    play() {
+      this.$refs.def;
+      console.log(def);
+    },
     article_load() {
       this.$axios({
         url: `/post/${sessionStorage.getItem("id")}`,
       }).then((res) => {
         this.date = res.data.data;
-        console.log(this.date);
-        console.log(this.date.has_follow);
         if (res.data.data.has_like) {
           this.nice_c = "nice_y";
         }
+        this.$refs.def;
       });
     },
 
@@ -126,6 +143,16 @@ export default {
           this.date.has_follow = true;
         });
       }
+    },
+
+    //跟帖内容获取----------------------------------------
+    comment() {
+      this.$axios({
+        url: `/post_comment/${sessionStorage.getItem("id")}`,
+      }).then((res) => {
+        this.commentList = res.data.data;
+        console.log(this.commentList);
+      });
     },
   },
 };
@@ -184,9 +211,15 @@ export default {
 
 //视频----------------------------------------------------------
 .video {
-  video {
-    position: relative;
+  .video_content {
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    video {
+      width: 100%;
+    }
     .iconshipin {
       position: absolute;
       font-size: 46/360 * 100vw;
@@ -267,5 +300,22 @@ export default {
 .follow_has {
   background-color: #97cbee !important;
   color: white;
+}
+
+//内容中线---------------------------------------------------
+.line {
+  margin-top: 20 /360 * 100vw;
+  width: 100%;
+  height: 3px;
+  background-color: #f2f2f2;
+}
+
+.comment {
+  h2 {
+    margin-top: 10 /360 * 100vw;
+    text-align: center;
+    font-weight: 400;
+    color: rgb(124, 124, 124);
+  }
 }
 </style>
