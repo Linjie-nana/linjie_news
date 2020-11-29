@@ -12,7 +12,7 @@ import userComment from '../views/profile/userComment.vue'
 import articleDetails from '../views/profile/articleDetails.vue'
 import userStar from '../views/profile/userStar.vue'
 import test from '../views/test.vue'
-
+import moreComment from '../views/profile/moreComment.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -75,6 +75,10 @@ const routes = [
   {
     path: '/test',
     component: test
+  }, {
+    path: '/moreComment',
+    component: moreComment
+
   }
 ]
 

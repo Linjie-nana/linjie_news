@@ -65,7 +65,10 @@
       <h2>精彩跟帖</h2>
       <comment :commentData="item" v-for="(item, index) in commentList" :key="index" />
     </div>
-    <div class="moreComment">更多跟帖</div>
+    <div class="line"></div>
+
+    <!-- 将id嵌入请求中发送 -->
+    <div class="moreComment" @click="morecomment">更多跟帖</div>
   </div>
 </template>
 
@@ -91,10 +94,6 @@ export default {
     this.comment();
   },
   methods: {
-    play() {
-      this.$refs.def;
-      console.log(def);
-    },
     article_load() {
       this.$axios({
         url: `/post/${sessionStorage.getItem("id")}`,
@@ -150,9 +149,15 @@ export default {
       this.$axios({
         url: `/post_comment/${sessionStorage.getItem("id")}`,
       }).then((res) => {
+        if (res.data.data.length > 3) {
+          res.data.data.length = 3;
+        }
         this.commentList = res.data.data;
         console.log(this.commentList);
       });
+    },
+    morecomment() {
+      this.$router.push("/morecomment?id=" + sessionStorage.getItem("id"));
     },
   },
 };
@@ -317,5 +322,16 @@ export default {
     font-weight: 400;
     color: rgb(124, 124, 124);
   }
+}
+
+.moreComment {
+  width: 118/360 * 100vw;
+  line-height: 30/360 * 100vw;
+  font-size: 16/360 * 100vw;
+  color: #333;
+  border: 1px solid #888;
+  text-align: center;
+  margin: 40/360 * 100vw auto;
+  border-radius: 20/360 * 100vw;
 }
 </style>
