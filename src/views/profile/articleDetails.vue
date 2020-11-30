@@ -97,7 +97,6 @@ export default {
   },
   methods: {
     //  根据在sessionStorage中传过来的id请求获取文章内容-------------------------------
-
     article_load() {
       this.$axios({
         url: `/post/${sessionStorage.getItem("id")}`,

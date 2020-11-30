@@ -14,11 +14,11 @@
       err_msg="不合法"
       @push_num="get_name(arguments)"
     />
-
+    <!-- :rule="/^\d{1,12}$/" -->
     <userInput
       type="password"
       placeholder="输入密码"
-      :rule="/^\d{1,12}$/"
+      :rule="/^.{3,12}$/"
       err_msg="不合法"
       @push_num="get_password(arguments)"
     />

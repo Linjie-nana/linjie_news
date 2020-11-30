@@ -41,8 +41,14 @@ export default {
   border: 1px solid#ccc;
   border-radius: 8px;
   background-color: rgba(131, 131, 131, 0.13);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .faText {
   padding: 10/360 * 100vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

@@ -43,6 +43,9 @@ export default {
   .info {
     flex: 1;
     padding-left: 10/360 * 100vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     .name {
       font-size: 16/360 * 100vw;
       color: #333;
