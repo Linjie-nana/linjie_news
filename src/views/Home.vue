@@ -125,25 +125,7 @@ export default {
         }
       });
     },
-    //tab标签页的两个返回值之一，因为在下面的子选项种选择了name=item.id,所以name指向id
-    // gogogo(name) {
-    //   this.$axios({
-    //     url: `/post?category=${name}`,
-    //     method: "get",
-    //   }).then((res) => {
-    //     // console.log(res);
-    //     this.postData = res.data.data;
-    //     console.log(this.postData);
-    //     this.active = name;
-    //   });
-    //   // console.log(name);
-    // },
-    // onRefresh() {
-    //   setTimeout(() => {
-    //     this.isLoading = false;
-    //     this.gogogo(this.active);
-    //   }, 1000);
-    // },
+
     link(id) {
       sessionStorage.setItem("id", id);
       this.$router.push("/articleDetails");

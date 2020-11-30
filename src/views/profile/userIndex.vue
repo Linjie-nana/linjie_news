@@ -1,5 +1,6 @@
 <template>
   <div class="body">
+    <headers title="个人主页" />
     <div class="header" @click="link">
       <img :src="'http://157.122.54.189:9083'+ head_img" class="header_img" />
       <div class="user_name">
@@ -32,6 +33,7 @@
 
 <script>
 import item from "@/components/item";
+import headers from "@/components/header";
 export default {
   data() {
     return {
@@ -40,7 +42,7 @@ export default {
       gender: "",
     };
   },
-  components: { item },
+  components: { item, headers },
   methods: {
     link() {
       window.location.href = "#/userupdata";

@@ -24,14 +24,15 @@ export default {
 <style lang="less" scoped>
 .header_color {
   width: 100%;
-  height: 60 /360 * 100vw;
+  height: 50 /360 * 100vw;
   // background: -webkit-linear-gradient(bottom, #f2f2f2, #54a9e2);
-  background-color: #54a9e2;
+  // background-color: #54a9e2;
+  background: -webkit-linear-gradient(right, #8cbddd, #54a9e2);
   color: white;
   font-size: 16 /360 * 100vw;
   font-weight: 700;
   text-align: center;
-  line-height: 60 /360 * 100vw;
+  line-height: 50 /360 * 100vw;
   .iconjiantou2 {
     float: left;
     margin-left: 10px;

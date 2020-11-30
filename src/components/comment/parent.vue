@@ -14,12 +14,16 @@
 export default {
   name: "Parent",
   props: ["parentData"],
+  mothods: {},
 };
 </script>
 
 <style lang="less" scoped>
 .info {
   display: flex;
+  .name {
+    font-size: 14 /360 * 100vw;
+  }
   .date {
     flex: 1;
     padding-left: 10/360 * 100vw;
@@ -35,6 +39,8 @@ export default {
   margin: 3/360 * 100vw;
   padding: 3/360 * 100vw;
   border: 1px solid#ccc;
+  border-radius: 8px;
+  background-color: rgba(131, 131, 131, 0.13);
 }
 .faText {
   padding: 10/360 * 100vw;

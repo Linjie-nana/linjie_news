@@ -1,7 +1,7 @@
 <template>
   <div class="head">
     <span class="iconfont iconwode" @click="link"></span>
-    <div class="search">
+    <div class="search" @click="$router.push('/postSearch')">
       <span class="iconfont iconsearch"></span>
       搜索新闻
     </div>

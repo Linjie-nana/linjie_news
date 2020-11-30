@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Digui :num="3" />
+    <Digui :num="20" />
   </div>
 </template>
 

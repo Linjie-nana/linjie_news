@@ -16,7 +16,6 @@
       <div class="btnReply">回复</div>
     </div>
     <commmentParent :parentData="commentData.parent" v-if="commentData.parent" />
-
     <div class="text">{{commentData.content}}</div>
   </div>
 </template>

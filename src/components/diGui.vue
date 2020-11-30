@@ -17,5 +17,6 @@ export default {
   margin: 3/360 * 100vw;
   padding: 3/360 * 100vw;
   border: 1px solid pink;
+  background-color: rgba(65, 162, 241, 0.171);
 }
 </style>

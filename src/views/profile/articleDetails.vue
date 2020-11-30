@@ -68,17 +68,20 @@
     <div class="line"></div>
 
     <!-- 将id嵌入请求中发送 -->
-    <div class="moreComment" @click="morecomment">更多跟帖</div>
+    <div class="moreComment" @click="morecomment" v-if="commentList.length>=3">更多跟帖</div>
+    <CommentInputDom />
   </div>
 </template>
 
 <script>
 import headers from "../../components/header";
 import comment from "../../components/comment/mian";
+import CommentInputDom from "../..//components/comment/inputDom";
 export default {
   components: {
     headers,
     comment,
+    CommentInputDom,
   },
   data() {
     return {
@@ -88,12 +91,13 @@ export default {
       commentList: "",
     };
   },
-  //  根据在sessionStorage中传过来的id请求获取文章内容-------------------------------
   mounted() {
     this.article_load();
     this.comment();
   },
   methods: {
+    //  根据在sessionStorage中传过来的id请求获取文章内容-------------------------------
+
     article_load() {
       this.$axios({
         url: `/post/${sessionStorage.getItem("id")}`,
@@ -331,7 +335,7 @@ export default {
   color: #333;
   border: 1px solid #888;
   text-align: center;
-  margin: 40/360 * 100vw auto;
+  margin: 20/360 * 100vw auto 60 /360 * 100vw;
   border-radius: 20/360 * 100vw;
 }
 </style>
