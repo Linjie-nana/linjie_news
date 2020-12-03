@@ -45,12 +45,15 @@ export default {
     },
   },
   created() {
+    //判断，如果用户的永久存储里面有两个数组则将数据存入变量中
     if (localStorage.getItem("activeList")) {
       this.activeList = JSON.parse(localStorage.getItem("activeList"));
       if (localStorage.getItem("deactiveList")) {
         this.deactiveList = JSON.parse(localStorage.getItem("deactiveList"));
       }
-    } else {
+    }
+    //没有则发送请求从接口获取
+    else {
       this.$axios({
         url: "/category",
       }).then((res) => {

@@ -10,7 +10,7 @@
         background="#f4f4f4"
         title-active-color="#54a9e2"
       >
-        <van-tab v-for="item in arr" :title="item.name" :key="item.id">
+        <van-tab v-for="(item,index) in arr" :title="item.name" :key="index">
           <van-list
             @load="loadMore"
             :immediate-check="false"
@@ -27,7 +27,7 @@
           </van-list>
         </van-tab>
       </van-tabs>
-      <!-- <div class="icon">
+      <!-- <div class="icon">;
         <span class="iconfont iconjiantou"></span>
       </div>-->
     </div>
@@ -67,19 +67,14 @@ export default {
     },
   },
   created() {
-    this.$axios({
-      url: "/category",
-    }).then((res) => {
-      const res_data = res.data.data;
-      // /这一种是去重渲染首页
-      let new_arr = new Set();
-      res_data.forEach((element) => {
-        if (!new_arr.has(element.name)) {
-          new_arr.add(element.name);
-          this.arr.push(element);
-        }
-      });
-      // 得到列表项目的同时，将文章数组放入该列表内的postList[]
+    //如果管理页已经设了关注的栏目
+    if (localStorage.getItem("activeList")) {
+      const res = {
+        data: {
+          data: JSON.parse(localStorage.getItem("activeList")),
+        },
+      };
+      this.arr = res.data.data;
       this.arr = this.arr.map((item) => {
         return {
           ...item,
@@ -95,7 +90,39 @@ export default {
       this.arr.push({ name: "+" });
       console.log(this.arr);
       this.loadPost();
-    });
+    }
+    // 没有则继续请求数据
+    else {
+      this.$axios({
+        url: "/category",
+      }).then((res) => {
+        const res_data = res.data.data;
+        // /这一种是去重渲染首页
+        let new_arr = new Set();
+        res_data.forEach((element) => {
+          if (!new_arr.has(element.name)) {
+            new_arr.add(element.name);
+            this.arr.push(element);
+          }
+        });
+        // 得到列表项目的同时，将文章数组放入该列表内的postList[]
+        this.arr = this.arr.map((item) => {
+          return {
+            ...item,
+            postList: [],
+            //端口的页数参数，初始化文章数据的时候加进去
+            pageIndex: 1,
+            pageSize: 6,
+            loading: false,
+            finished: false,
+          };
+        });
+        // 在最后添加加号
+        this.arr.push({ name: "+" });
+        console.log(this.arr);
+        this.loadPost();
+      });
+    }
   },
 
   methods: {
