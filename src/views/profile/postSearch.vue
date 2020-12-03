@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     <div class="top">
-      <span class="iconfont iconjiantou2" @click="$router.back()"></span>
+      <span class="iconfont iconjiantou2" @click="back"></span>
       <span class="iconfont iconsearch"></span>
       <input type="text" placeholder="许上林花费高价越南购买老婆" v-model="search" />
       <span @click="postSearch">搜索</span>
@@ -90,6 +90,13 @@ export default {
     link(id) {
       sessionStorage.setItem("id", id);
       this.$router.push("/articleDetails");
+    },
+    back() {
+      if (this.postList.length > 0) {
+        this.postList = "";
+      } else {
+        this.$router.back();
+      }
     },
   },
 };

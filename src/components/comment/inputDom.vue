@@ -20,16 +20,27 @@
 </template>
 
 <script>
+import eventBus from "../../utils/eventBus";
 export default {
   data() {
     return {
       content: "",
       isActive: "",
+      parentId: "",
     };
   },
+  mounted() {
+    //从mian获取到回复对应的id值
+    eventBus.$on("sendMsg", (parentId) => {
+      this.showTextarea();
+      this.parentId = parentId;
+    });
+  },
   methods: {
+    // 显示评论
     showTextarea() {
       this.isActive = true;
+      // $nextTick函数，可以等到vue渲染后再运行里面的内容
       this.$nextTick(() => {
         this.$refs.textarea.focus();
       });
@@ -40,15 +51,20 @@ export default {
         url: "/post_comment/" + sessionStorage.getItem("id"),
         data: {
           content: this.content,
-          // parent_id: 1807,
+          parent_id: this.parentId,
         },
       }).then((res) => {
         console.log(res.data);
+        // 发布评论完毕, 应该通知父组件获取新的评论
+        this.$emit("reloadComment");
       });
     },
+    // 隐藏评论
     hideTextarea() {
+      //延时器让隐藏评论慢一拍，使得发送请求可以点击发送
       setTimeout(() => {
         this.isActive = false;
+        this.parentId = "";
       }, 100);
     },
   },

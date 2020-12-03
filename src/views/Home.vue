@@ -27,9 +27,9 @@
           </van-list>
         </van-tab>
       </van-tabs>
-      <div class="icon">
+      <!-- <div class="icon">
         <span class="iconfont iconjiantou"></span>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -87,6 +87,8 @@ export default {
           finished: false,
         };
       });
+      // 在最后添加加号
+      this.arr.push({ name: "+" });
       console.log(this.arr);
       this.loadPost();
     });
@@ -164,6 +166,13 @@ export default {
   }
   /deep/ .van-tabs__line {
     background-color: #54a9e2;
+  }
+  /deep/ .van-tab:nth-last-child(2) {
+    background-color: #f4f4f4;
+    position: sticky;
+    right: -8px;
+    width: 44 /360 * 100vw;
+    line-height: 44 /360 * 100vw;
   }
 }
 </style>

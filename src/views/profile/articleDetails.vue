@@ -27,7 +27,7 @@
       <headers title="视频页" />
       <div class="video_content">
         <video
-          src=" https://video.pearvideo.com/mp4/adshort/20200421/cont-1670293-15098199_adpkg-ad_hd.mp4"
+          :src="date.content"
           controls
           ref="def"
           poster="http://157.122.54.189:9083/uploads/image/IMG1606459976647.jpeg"
@@ -69,7 +69,7 @@
 
     <!-- 将id嵌入请求中发送 -->
     <div class="moreComment" @click="morecomment" v-if="commentList.length>=3">更多跟帖</div>
-    <CommentInputDom />
+    <CommentInputDom @reloadComment="comment" />
   </div>
 </template>
 
@@ -135,8 +135,8 @@ export default {
           url: `/user_unfollow/${this.date.user.id}`,
         }).then((res) => {
           console.log(res);
+          this.date.has_follow = false;
         });
-        this.date.has_follow = false;
       } else {
         this.$axios({
           url: `/user_follows/${this.date.user.id}`,

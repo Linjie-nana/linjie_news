@@ -13,7 +13,7 @@
         <div class="name">{{commentData.user.nickname}}</div>
         <div class="date">2小时前</div>
       </div>
-      <div class="btnReply">回复</div>
+      <div class="btnReply" @click="sendComment">回复</div>
     </div>
     <commmentParent :parentData="commentData.parent" v-if="commentData.parent" />
     <div class="text">{{commentData.content}}</div>
@@ -22,11 +22,20 @@
 
 <script>
 import commmentParent from "./parent";
+import eventBus from "../../utils/eventBus";
+
 export default {
   components: {
     commmentParent,
   },
   props: ["commentData"],
+  methods: {
+    sendComment() {
+      // 引入了一个 eventBus vue 实例
+      // 可以用 $emit 给这个实例触发事件
+      eventBus.$emit("sendMsg", this.commentData.id);
+    },
+  },
 };
 </script>
 
