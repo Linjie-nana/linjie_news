@@ -45,7 +45,7 @@ export default {
       active: 0,
       // arr 是tabs栏渲染的分类，将文章页存放于此
       arr: [],
-      isLoading: false,
+      // isLoading: false,
     };
   },
   watch: {
@@ -54,11 +54,15 @@ export default {
       console.log(this.active, "获取改变后的索引");
       const currentItem = this.arr[this.active];
       console.log(currentItem, "根据索引在tab栏分类数组种找到相关数据");
-
-      // 因为将文章储存的数据储存在了postList[]种，在监听到发生改变的时候就进行判断看是否有获取过文章列表
-      if (currentItem.postList.length == 0) {
-        // 如果没有获取过文章列表，则判定获取列表
-        this.loadPost();
+      // 如果切换到arr表的最后一个，则转跳;
+      if (this.active == this.arr.length - 1) {
+        this.$router.push("/manage");
+      } else {
+        if (currentItem.postList.length == 0) {
+          // 因为将文章储存的数据储存在了postList[]种，在监听到发生改变的时候就进行判断看是否有获取过文章列表
+          // 如果没有获取过文章列表，则判定获取列表
+          this.loadPost();
+        }
       }
     },
   },
