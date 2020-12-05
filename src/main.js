@@ -32,6 +32,7 @@ Vue.filter('fixImgUrl', (oldUrl) => {
 
 
 
+
 // 配置 vuex
 // 1. 引入 vuex
 import Vuex from 'vuex'
@@ -41,20 +42,22 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   // state 是共享状态数据的对象
   state: {
-    count: 0,
-    count2: 1,
-
+    historyList: []
   },
   // mutations 是用来修改数据的函数对象
   mutations: {
-    addCount(state, data) {
-      // 每个 mutations 函数, 第一个形参都能接收state对象
-      state.count += 1
+    addHistory(state, data) {
+      // 判断推入进来的数据, 在原数组中不存在
+      // 再放入
+      if (state.historyList.indexOf(data) === -1) {
+        state.historyList.push(data)
+      }
+    },
+    recoverHistory(state, data) {
+      state.historyList = data
     }
-
   }
 })
-
 
 
 
@@ -63,6 +66,7 @@ const store = new Vuex.Store({
 Vue.config.productionTip = false
 new Vue({
   router,
+  store,
   render: function (h) { return h(App) }
 }).$mount('#app')
 

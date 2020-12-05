@@ -1,99 +1,87 @@
 <template>
-  <div class="box">
-    <div class="top">
-      <span class="iconfont iconjiantou2" @click="back"></span>
-      <span class="iconfont iconsearch"></span>
-      <input type="text" placeholder="许上林花费高价越南购买老婆" v-model="search" />
-      <span @click="postSearch">搜索</span>
+  <div>
+    <div class="header">
+      <span class="iconfont iconjiantou2" @click="goback"></span>
+      <div class="search">
+        <span class="iconfont iconsearch"></span>
+        <input type="text" v-model="keyword" />
+      </div>
+      <div class="btn" @click="handleSearch">搜索</div>
     </div>
 
-    <div class="history" v-if="postList==0">
-      <div class="historySearch">历史纪录</div>
-      <!-- 历史记录 -->
-      <div
-        class="historyItem"
-        v-for="(item,index) of history"
-        :key="index"
-        @click="history_search(item)"
-      >{{item}}</div>
-    </div>
-    <div class="content" v-if="postList!=0">
-      <div class="title" v-for="(item,index) of postList" :key="index" @click="link(item.id)">
-        {{item.title}}
-        <span class="iconfont iconjiantou1"></span>
+    <div class="historyList" v-if="postList.length == 0">
+      <h2>历史记录</h2>
+      <div class="list">
+        <div
+          @click="historySearch(item)"
+          class="item"
+          v-for="(item, index) in $store.state.historyList"
+          :key="index"
+        >{{ item }}</div>
       </div>
+    </div>
+
+    <div class="resList">
+      <PostItem :postData="post" v-for="post in postList" :key="post.id" />
     </div>
   </div>
 </template>
 
 <script>
-import headers from "../../components/header";
+import PostItem from "../../components/indexPostItem";
 export default {
   components: {
-    headers,
+    PostItem,
   },
   data() {
     return {
-      search: "",
-      postList: "",
-      history: "",
+      keyword: "",
+      postList: [],
     };
   },
   created() {
-    this.loadHistory();
+    // 历史记录持久化第二步,如果进入页面时发现本地储存有历史数据, 应该恢复
+    if (localStorage.getItem("history")) {
+      const oldHistory = JSON.parse(localStorage.getItem("history"));
+      this.$store.commit("recoverHistory", oldHistory);
+    }
   },
-  methods: {
-    postSearch() {
-      if (this.search != "") {
-        this.$axios({
-          url: "/post_search",
-          params: {
-            keyword: this.search,
-          },
-        }).then((res) => {
-          this.postList = res.data.data;
-          //   判断历史记录去重;
-          if (this.history.indexOf(this.search) == -1) {
-            //获取历史;
-            let obj = localStorage.getItem("history").split(",");
-            console.log(obj, "获取的数组");
-            //如果local里面没有history;
-            if (obj == null) {
-              obj = [];
-            }
-            //加入到数组中
-            obj.push(this.search);
-            console.log(obj, "加入数组后");
-            localStorage.setItem("history", obj);
-            //重新加载this.history
-            this.loadHistory();
-          } else if (res.data.data == 0) {
-            this.$toast("无内容");
-          }
-        });
-      } else {
-        this.postList = "";
-        this.$toast("请输入搜索内容");
+  watch: {
+    keyword(newVal) {
+      if (!newVal) {
+        this.postList = [];
       }
     },
+    // 历史记录持久化第一步,每当数组变化就要存入 localStorage
+    "$store.state.historyList": function () {
+      localStorage.setItem(
+        "history",
+        JSON.stringify(this.$store.state.historyList)
+      );
+    },
+  },
+  methods: {
+    historySearch(item) {
+      this.keyword = item;
+      this.handleSearch();
+    },
+    handleSearch() {
+      this.$store.commit("addHistory", this.keyword);
 
-    loadHistory() {
-      this.history = localStorage.getItem("history").split(",");
-      console.log(this.history);
+      this.$axios({
+        url: "post_search",
+        params: {
+          keyword: this.keyword,
+        },
+      }).then((res) => {
+        console.log(res.data);
+        this.postList = res.data.data;
+      });
     },
-    history_search(item) {
-      this.search = item;
-      this.postSearch();
-    },
-
-    // 因为文章是根据   sessionStorage获取的，所以转跳直接将id加入到其中
-    link(id) {
-      sessionStorage.setItem("id", id);
-      this.$router.push("/articleDetails");
-    },
-    back() {
+    goback() {
       if (this.postList.length > 0) {
-        this.postList = "";
+        this.postList = [];
+        this.keyword = "";
       } else {
         this.$router.back();
       }
@@ -102,60 +90,48 @@ export default {
 };
 </script>
 
-
 <style lang="less" scoped>
-.top {
-  padding: 0 10 /360 * 100vw;
-  position: relative;
-  height: 50 /360 * 100vw;
+.header {
   display: flex;
+  height: 58 /360 * 100vw;
   align-items: center;
-  justify-content: space-around;
-  .iconfont {
-    font-size: 16 /360 * 100vw;
-    font-weight: 700;
-    color: rgb(158, 158, 158);
-  }
-  input {
-    box-sizing: border-box;
-    width: 80%;
-    outline: none;
-    height: 30 /360 * 100vw;
-    border-radius: 15 /360 * 100vw;
-    border: 1px solid #ccc;
-    padding: 0 25 /360 * 100vw;
-  }
-  .iconsearch {
-    position: absolute;
-    left: 12%;
-  }
-}
-.history {
-  padding: 20 /360 * 100vw;
-  .historySearch {
-    font-size: 16 /360 * 100vw;
-    font-weight: 700;
-    margin-bottom: 10 /360 * 100vw;
-  }
-  .historyItem {
-    margin: 5 /360 * 100vw;
-    display: inline-block;
-    width: 20%;
-    text-align: center;
-    border-bottom: 1px solid #ccc;
-  }
-}
-
-.content {
-  .title {
-    height: 40 /360 * 100vw;
-    line-height: 40 /360 * 100vw;
-    border-bottom: 1px solid #ccc;
-    padding: 0 10 /360 * 100vw;
+  padding: 0 16 /360 * 100vw;
+  .search {
     font-size: 13 /360 * 100vw;
-    span {
-      float: right;
+    flex-grow: 1;
+    border: 1px solid #888;
+    height: 38 /360 * 100vw;
+    display: flex;
+    align-items: center;
+    padding: 0 10 /360 * 100vw;
+    margin: 0 16 /360 * 100vw;
+    border-radius: 19 /360 * 100vw;
+
+    .iconfont {
+      font-size: 13 /360 * 100vw;
       padding-right: 10 /360 * 100vw;
+    }
+    input {
+      width: 180 /360 * 100vw;
+      border: none;
+      outline: none;
+    }
+  }
+  .btn {
+    font-size: 16 /360 * 100vw;
+  }
+}
+.historyList {
+  padding: 16 /360 * 100vw;
+  h2 {
+    font-size: 18 /360 * 100vw;
+  }
+  .list {
+    display: flex;
+    font-size: 13 /360 * 100vw;
+    .item {
+      padding: 10 /360 * 100vw;
+      padding-left: 0;
     }
   }
 }
